@@ -39,11 +39,10 @@ public class BaseTest {
 	public void setup() throws FileNotFoundException {
 
 		serviceUrl = prop.getProperty("BASE_URL");
-
-		apiPathAuthenticate = prop.getProperty("serviceURL_create");
+		apiPathAuthenticate = prop.getProperty("apiPathAuthenticate");
 		urlAuthenticate = serviceUrl + apiPathAuthenticate;
 
-		apiPathUser = prop.getProperty("serviceURL_join");
+		apiPathUser = prop.getProperty("apiPathGetUser");
 		urlUser = serviceUrl + apiPathUser;
 
 		String log4Jpath = System.getProperty("user.dir") + "/log4j.properties";
