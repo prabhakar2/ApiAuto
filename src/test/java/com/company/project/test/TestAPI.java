@@ -34,10 +34,10 @@ import com.jayway.restassured.response.Response;
 		Assert.assertEquals(responseCodePost, RESPONSE_STATUS_CODE_200);
 		
 		String responsebodyPost= responsePostAPI.asString();
-		log.info("responsebodyPost" + responsebodyPost);
+		log.info("responsebodyPost: " + responsebodyPost);
 		
 	    JsonPath jp = new JsonPath(responsebodyPost);
-	    jwttoken=jp.getString("jwttoken");
+	    jwttoken=jp.getString("token");
 	 
 	    log.info("Get call:");
 	    Response responseAllUserGetAPI = RestClient.getCall(urlUser, jwttoken);
@@ -47,7 +47,7 @@ import com.jayway.restassured.response.Response;
 		
 		String responsebodyGet= responseAllUserGetAPI.asString();
 		System.out.println(responsebodyGet);
-		log.info("responsebodyGet" + responsebodyGet);
+		log.info("responsebodyGet: " + responsebodyGet);
 		
 		
 			
