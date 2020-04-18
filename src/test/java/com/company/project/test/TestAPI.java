@@ -1,18 +1,17 @@
 package com.company.project.test;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import com.company.project.base.BaseTest;
 import com.company.project.client.RestClient;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
-
-
 
  public class TestAPI extends BaseTest{
     String jwttoken=null;
@@ -46,9 +45,17 @@ import com.jayway.restassured.response.Response;
 		Assert.assertEquals(responseCodeGet, RESPONSE_STATUS_CODE_200);
 		
 		String responsebodyGet= responseAllUserGetAPI.asString();
-		System.out.println(responsebodyGet);
+		
 		log.info("responsebodyGet: " + responsebodyGet);
 		
+		JSONArray jsonArray = new JSONArray(responsebodyGet);
+		JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+		System.out.println(jsonObject.getString("career"));
+		
+		Assert.assertEquals(jsonObject.getString("first_name"), "Aliko");
+		Assert.assertEquals(jsonObject.getString("last_name"), "Dangote");
+		Assert.assertEquals(jsonObject.getString("career"), "Billionaire Industrialist");
+		Assert.assertEquals(jsonObject.getString("phone"), "8037602400");	
 		
 			
 	}
