@@ -1,13 +1,13 @@
 package com.company.project.test;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import com.company.project.base.BaseTest;
 import com.company.project.client.RestClient;
 import com.jayway.restassured.path.json.JsonPath;
@@ -56,10 +56,51 @@ import com.jayway.restassured.response.Response;
 		Assert.assertEquals(jsonObject.getString("last_name"), "Dangote");
 		Assert.assertEquals(jsonObject.getString("career"), "Billionaire Industrialist");
 		Assert.assertEquals(jsonObject.getString("phone"), "8037602400");	
+	
+	}
+	
+	@Test(priority=2, enabled=true)
+	public void TestSingleUserRecords(){
+		
+		log.info("Post Auth call:");
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("username", "rupeek");
+        hm.put("password", "password");
+        
+        JSONObject jsonObjectBody = new JSONObject(hm);
+        String payload=jsonObjectBody.toString();
+	   
+		Response responsePostAPI = RestClient.postCallWithToken(urlAuthenticate, payload);
+		int responseCodePost= responsePostAPI.getStatusCode();
+		Assert.assertEquals(responseCodePost, RESPONSE_STATUS_CODE_200);
+		
+		String responsebodyPost= responsePostAPI.asString();
+		log.info("responsebodyPost: " + responsebodyPost);
+		
+	    JsonPath jp = new JsonPath(responsebodyPost);
+	    jwttoken=jp.getString("token");
+	 
+	    log.info("Get call:");
+	    String phone="8037602400";
+	    Response responseAllUserGetAPI = RestClient.getCall(urlUser+"/"+phone, jwttoken);
+	    
+	    int responseCodeGet= responsePostAPI.getStatusCode();
+		Assert.assertEquals(responseCodeGet, RESPONSE_STATUS_CODE_200);
+		
+		String responsebodyGet= responseAllUserGetAPI.asString();
+		
+		log.info("responsebodyGet: " + responsebodyGet);
+		
+		JsonPath jps = new JsonPath(responsebodyGet);
+	
+		
+		Assert.assertEquals(jps.getString("first_name"), "Aliko");
+		Assert.assertEquals(jps.getString("last_name"), "Dangote");
+		Assert.assertEquals(jps.getString("career"), "Billionaire Industrialist");
+		Assert.assertEquals(jps.getString("phone"), "8037602400");	
 		
 			
 	}
-	
 
 	
 	
